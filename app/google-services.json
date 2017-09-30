@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "965322110909",
-    "firebase_url": "https://findlostthings-3af34.firebaseio.com",
-    "project_id": "findlostthings-3af34",
-    "storage_bucket": "findlostthings-3af34.appspot.com"
+    "project_number": "367699412834",
+    "firebase_url": "https://findlost-77376.firebaseio.com",
+    "project_id": "findlost-77376",
+    "storage_bucket": "findlost-77376.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:965322110909:android:84f7a4697e5bf9da",
+        "mobilesdk_app_id": "1:367699412834:android:35197022674a2e42",
         "android_client_info": {
-          "package_name": "joyee.findlostthings"
+          "package_name": "joyee.findlost"
         }
       },
       "oauth_client": [
         {
-          "client_id": "965322110909-418ae17d17j2vovno8dqn7jjo9e0u0ph.apps.googleusercontent.com",
+          "client_id": "367699412834-b0t7q789osvqs86d5ptukggv7orrrla1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "joyee.findlostthings",
-            "certificate_hash": "3a89368bb912f68086292b808c24fc10eb634e38"
+            "package_name": "joyee.findlost",
+            "certificate_hash": "231c7651b19049f87b1d48617aa57142ed84c549"
           }
         },
         {
-          "client_id": "965322110909-18l2et3trsv4atbcd74iprdm3qoesdqe.apps.googleusercontent.com",
+          "client_id": "367699412834-teqssps60p83qi7hlovcjl6ceqrsdgmi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDCnODmzyOINphP-_w7zgAURlbysRvayHc"
+          "current_key": "AIzaSyCYwORXoPXhH_hr2dwDIojvQwl7C606wys"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "965322110909-18l2et3trsv4atbcd74iprdm3qoesdqe.apps.googleusercontent.com",
+              "client_id": "367699412834-teqssps60p83qi7hlovcjl6ceqrsdgmi.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

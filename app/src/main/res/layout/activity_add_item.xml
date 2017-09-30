@@ -4,76 +4,106 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="joyee.findlost.AddItemActivity"
     android:orientation="vertical"
-    android:padding="16dp">
-    <LinearLayout
+    android:padding="16dp"
+    tools:context="joyee.findlost.AddItemActivity">
+
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btn_save"
-        android:orientation="vertical"
-        >
-   <EditText
+        android:layout_height="match_parent">
 
-       android:id="@+id/et_itemname"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:hint="FoundItemName"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:hint="ItemLocation"/>
+            <EditText
+                android:id="@+id/et_itemname"
+                style="@style/editTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="FoundItemName" />
 
-    <EditText
-        android:id="@+id/et_itemdisc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:hint="ItemDiscription"/>
+            <EditText
+                android:id="@+id/et_location"
+                style="@style/editTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ItemLocation"
+                android:inputType="textMultiLine" />
 
-        <EditText
-            android:id="@+id/et_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Date"/>
-
-        <EditText
-            android:id="@+id/et_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Time"/>
-
-        <Button
-            android:id="@+id/btn_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/holo_green_dark"
-            android:textColor="@android:color/white"
-            android:text="OPENCAMERA"
-            android:layout_below="@+id/et_time"
-            android:padding="10dp" />
-        <ImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@+id/btn_camera"
-        />
-
-    </LinearLayout>
+            <EditText
+                android:id="@+id/et_itemdisc"
+                style="@style/editTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ItemDiscription"
+                android:inputType="textMultiLine" />
 
 
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SAVE"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+            <EditText
+                android:id="@+id/et_date"
+                style="@style/editTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date" />
 
+            <EditText
+                android:id="@+id/et_time"
+                style="@style/editTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Time" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/item_type_spinner" />
+
+            <Button
+                android:id="@+id/btn_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:background="@android:color/holo_green_dark"
+                android:padding="5dp"
+                android:text="@string/capture_image"
+                android:textColor="@android:color/white" />
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancel" />
+
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="SAVE" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

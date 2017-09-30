@@ -5,6 +5,9 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_login">Sign in</string>
 
+
+    <string name="capture_image">Capture Image</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -17,4 +20,13 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+
+    <string-array name="item_type_spinner">
+        <item>Found</item>
+        <item>Lost</item>
+    </string-array>
+
+
+
 </resources>

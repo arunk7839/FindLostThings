@@ -3,28 +3,24 @@ package joyee.findlost;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+
+import joyee.findlost.Model.Item;
+import joyee.findlost.Util.Constant;
+
 
 public class AddItemActivity extends AppCompatActivity {
     private static final int RC_IMAGE = 2;
     private ImageView imageView;
-    private FirebaseStorage mDatabaseStorage;
-    private StorageReference mStorageReference;
-    FirebaseDatabase mFirebaseDatabase;
-    DatabaseReference mDatabaseReference;
     EditText ItemName;
     EditText ItemLocation;
     EditText ItemDiscription;
@@ -34,25 +30,42 @@ public class AddItemActivity extends AppCompatActivity {
     Button btn_save;
     Uri downloadUrl;
     String imageEncoded;
+    Button btn_camera;
+
+
+    FirebaseDatabase mFireBaseDatabase;
+    DatabaseReference mDataBaseReference;
+    DatabaseReference mDataBaseItemReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference().child("details");
-        mDatabaseStorage = FirebaseStorage.getInstance();
-        mStorageReference = mDatabaseStorage.getReference();
+        initiliseFirebaseDatabase();
+        initWidgets();
+        initListeners();
+
+    }
+
+    private void initiliseFirebaseDatabase() {
+        mFireBaseDatabase = FirebaseDatabase.getInstance();
+        mDataBaseReference = mFireBaseDatabase.getReference(Constant.FireBaseConstants.FIND_ND_LOST);
+        mDataBaseItemReference = mDataBaseReference.child(Constant.FireBaseConstants.ITEM);
+    }
+
+    private void initWidgets() {
         imageView = (ImageView) findViewById(R.id.image);
         ItemName = (EditText) findViewById(R.id.et_itemname);
         ItemLocation = (EditText) findViewById(R.id.et_location);
         ItemDiscription = (EditText) findViewById(R.id.et_itemdisc);
         Date = (EditText) findViewById(R.id.et_date);
         Time = (EditText) findViewById(R.id.et_time);
+        btn_save = (Button) findViewById(R.id.btn_save);
+        btn_camera = (Button) findViewById(R.id.btn_camera);
+    }
 
-
-        Button btn_camera = (Button) findViewById(R.id.btn_camera);
+    private void initListeners() {
         btn_camera.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -62,21 +75,21 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
-        btn_save = (Button) findViewById(R.id.btn_save);
+
         btn_save.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-               /* User users = new User(ItemName.getText().toString(), ItemLocation.getText().toString(), ItemDiscription.getText().toString(), Date.getText().toString(), Time.getText().toString(), downloadUrl.toString());
-                mDatabaseReference.push().setValue(users);*/
+                Item item = new Item();
+                item.setItemName("Radio");
+                item.setItemId(System.currentTimeMillis());
+                mDataBaseItemReference.push().setValue(item);
             }
 
 
         });
-
     }
-
 
     @Override
     protected void onActivityResult(int requestcode, int resultcode, Intent data) {
@@ -84,23 +97,9 @@ public class AddItemActivity extends AppCompatActivity {
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         imageView.setImageBitmap(bitmap);
 
-        Uri uri = data.getData();
-        StorageReference filepath = mStorageReference.child("photos").child(uri.getLastPathSegment());
-
-        filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // Get a URL to the uploaded content
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-
-            }
-
-
-        });
     }
 
-    }
+}
 
 
 
