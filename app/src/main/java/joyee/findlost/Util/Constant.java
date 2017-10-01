@@ -11,4 +11,8 @@ public class Constant {
         public static final String ITEM="item";
 
     }
+
+    public static class IntentKeys{
+        public static final String ITEM_KEY="item";
+    }
 }

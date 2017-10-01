@@ -1,10 +1,12 @@
 package joyee.findlost.Model;
 
+import java.io.Serializable;
+
 /**
  * Created by arunkumar on 30/09/17.
  */
 
-public class Item {
+public class Item implements Serializable{
 
     long itemId;
     String itemName;

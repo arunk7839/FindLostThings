@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,9 +22,9 @@ import joyee.findlost.Util.Constant;
 public class AddItemActivity extends AppCompatActivity {
     private static final int RC_IMAGE = 2;
     private ImageView imageView;
-    EditText ItemName;
+    EditText mItemNameEt;
     EditText ItemLocation;
-    EditText ItemDiscription;
+    EditText mItemDetailEt;
     EditText Date;
     EditText Time;
     ImageView ImageUrl;
@@ -31,6 +32,7 @@ public class AddItemActivity extends AppCompatActivity {
     Uri downloadUrl;
     String imageEncoded;
     Button btn_camera;
+    Spinner mSpinnerItemFor;
 
 
     FirebaseDatabase mFireBaseDatabase;
@@ -56,13 +58,15 @@ public class AddItemActivity extends AppCompatActivity {
 
     private void initWidgets() {
         imageView = (ImageView) findViewById(R.id.image);
-        ItemName = (EditText) findViewById(R.id.et_itemname);
+        mItemNameEt = (EditText) findViewById(R.id.et_itemname);
         ItemLocation = (EditText) findViewById(R.id.et_location);
-        ItemDiscription = (EditText) findViewById(R.id.et_itemdisc);
+        mItemDetailEt = (EditText) findViewById(R.id.et_itemdisc);
         Date = (EditText) findViewById(R.id.et_date);
         Time = (EditText) findViewById(R.id.et_time);
         btn_save = (Button) findViewById(R.id.btn_save);
         btn_camera = (Button) findViewById(R.id.btn_camera);
+        mSpinnerItemFor=(Spinner) findViewById(R.id.sp_itemfor);
+
     }
 
     private void initListeners() {
@@ -82,11 +86,16 @@ public class AddItemActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Item item = new Item();
-                item.setItemName("Radio");
+                item.setItemName(""+mItemNameEt.getText());
                 item.setItemId(System.currentTimeMillis());
+                item.setItemFor(""+mSpinnerItemFor.getSelectedItem());
+                item.setItemDetail(""+mItemDetailEt.getText());
+                item.setItemCreatedDate(System.currentTimeMillis());
+                item.setItemFoundLostDate(System.currentTimeMillis());
+                item.setItemType("unkonwn");
+                item.setLocation(""+ItemLocation.getText());
                 mDataBaseItemReference.push().setValue(item);
             }
-
 
         });
     }

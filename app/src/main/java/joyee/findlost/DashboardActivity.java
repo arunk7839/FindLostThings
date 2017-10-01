@@ -7,20 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import joyee.findlost.Model.Item;
 import joyee.findlost.Util.Constant;
 
@@ -41,12 +34,12 @@ public class DashboardActivity extends AppCompatActivity {
         initFirebaseListener();
         initWidget();
         initListener();
-        initData();
     }
 
     private void initiliseFirebaseDatabase() {
         mFireBaseDatabase = FirebaseDatabase.getInstance();
-        mFireBaseDatabase.setPersistenceEnabled(true);
+       // mFireBaseDatabase.setPersistenceEnabled(true);
+
         mDataBaseItemReference = mFireBaseDatabase.getReference(Constant.FireBaseConstants.FIND_ND_LOST)
                 .child(Constant.FireBaseConstants.ITEM);
     }
@@ -58,12 +51,15 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-               Map<String, Object> map = (HashMap<String,Object>) dataSnapshot.getValue();
-               // List<Item> values =  td.values();
-                List<Item> list = new ArrayList<Item>(map.values().stream().collect(Collectors.toList()));
-                List<Item> values = (List<Item>) map.values().stream().collect(Collectors.toList());
+                ArrayList<Item> itemList=new ArrayList<Item>();
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    // TODO: handle the post
+                   Item item= postSnapshot.getValue(Item.class);
+                   itemList.add(item);
+                }
 
-
+                initItemData(itemList);
+                Log.e("&&&&& ","$$$$$"+itemList.size());
             }
 
             @Override
@@ -122,12 +118,12 @@ public class DashboardActivity extends AppCompatActivity {
         mAdditemButton = (Button) findViewById(R.id.btn_additem);
     }
 
-    private void initData() {
-        ArrayList<Word> words = new ArrayList<Word>();
+    private void initItemData(ArrayList<Item> itemList) {
+/*        ArrayList<Word> words = new ArrayList<Word>();
         words.add(new Word("purse", R.drawable.purses));
         words.add(new Word("watch", R.drawable.watchs));
-        words.add(new Word("Ring", R.drawable.ring));
-        WordAdapterActivity adapter = new WordAdapterActivity(this, words);
+        words.add(new Word("Ring", R.drawable.ring));*/
+        ItemAdapter adapter = new ItemAdapter(this, itemList);
         mItemListView.setAdapter(adapter);
     }
 

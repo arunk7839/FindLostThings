@@ -57,7 +57,7 @@
                 android:hint="Time" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/sp_itemfor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/item_type_spinner" />
