@@ -4,16 +4,28 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 import joyee.findlost.Model.Item;
 import joyee.findlost.Util.Constant;
@@ -35,9 +47,14 @@ public class AddItemActivity extends AppCompatActivity {
     Spinner mSpinnerItemFor;
 
 
+    String mItemImageDownloadURL;
     FirebaseDatabase mFireBaseDatabase;
     DatabaseReference mDataBaseReference;
     DatabaseReference mDataBaseItemReference;
+
+    FirebaseStorage mFirebaseStorage;
+    StorageReference mItemPhotosStorageReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +71,11 @@ public class AddItemActivity extends AppCompatActivity {
         mFireBaseDatabase = FirebaseDatabase.getInstance();
         mDataBaseReference = mFireBaseDatabase.getReference(Constant.FireBaseConstants.FIND_ND_LOST);
         mDataBaseItemReference = mDataBaseReference.child(Constant.FireBaseConstants.ITEM);
+
+        mFirebaseStorage=FirebaseStorage.getInstance();
+        mItemPhotosStorageReference=mFirebaseStorage.getReference()
+                .child(Constant.FireBaseConstants.FIND_ND_LOST_STORAGE)
+                .child(Constant.FireBaseConstants.ITEM_STORAGE);
     }
 
     private void initWidgets() {
@@ -94,6 +116,7 @@ public class AddItemActivity extends AppCompatActivity {
                 item.setItemFoundLostDate(System.currentTimeMillis());
                 item.setItemType("unkonwn");
                 item.setLocation(""+ItemLocation.getText());
+                item.setItemImageUri(mItemImageDownloadURL);
                 mDataBaseItemReference.push().setValue(item);
             }
 
@@ -103,9 +126,50 @@ public class AddItemActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestcode, int resultcode, Intent data) {
         super.onActivityResult(requestcode, resultcode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        imageView.setImageBitmap(bitmap);
+       // Bitmap bitmap = (Bitmap) data.getExtras().get("data");
 
+       try {
+           String filename = "itemPhoto" + System.currentTimeMillis() + ".png";
+           File sd = Environment.getExternalStorageDirectory();
+           File file = new File(sd, filename);
+           if (!file.exists())
+               file.createNewFile();
+
+           Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+           try {
+               FileOutputStream out = new FileOutputStream(file);
+               bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+               out.flush();
+               out.close();
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+
+
+           Uri selectedPhotoUri = Uri.parse(file.getAbsolutePath());
+
+           Log.e("FIND & LOST", " selectedPhotoUri " + selectedPhotoUri);
+
+           StorageReference storageReference = mItemPhotosStorageReference.child(selectedPhotoUri.getLastPathSegment());
+           storageReference.putFile(selectedPhotoUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+               @Override
+               public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                   Uri photoDownloadURI = taskSnapshot.getDownloadUrl();
+                   mItemImageDownloadURL = photoDownloadURI.toString();
+               }
+           }).addOnFailureListener(new OnFailureListener() {
+               @Override
+               public void onFailure(@NonNull Exception e) {
+                   Toast.makeText(AddItemActivity.this,"Fail",Toast.LENGTH_LONG);
+                   e.printStackTrace();
+               }
+           });
+
+
+           imageView.setImageBitmap(bitmap);
+       }catch (Exception ex){
+           ex.printStackTrace();
+       }
     }
 
 }
